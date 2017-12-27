@@ -1,0 +1,74 @@
+= Docker container with Certbot
+
+This repository contains configurations to create a Docker container with:
+
+* *Ubuntu* 16.04
+* *Certbot* latest
+
+== Getting Started
+
+=== Prerequisites
+
+You have to install *Docker* and *Docker Compose* (optional) to build and run this container.
+
+=== Pull container
+
+You can download this container from *DockerHub* by launching this command :
+
+[source,bash]
+----
+docker pull lparet/docker-ubuntu-certbot
+----
+
+It will download the latest version.
+
+=== Run container
+
+==== Prerequisites
+
+.docker-compose.yml
+----
+services:
+  certbot:
+    image: lparet/docker-ubuntu-certbot
+    container_name: certbot
+    restart: always
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt
+      - /var/lib/letsencrypt:/var/lib/letsencrypt
+    ports:
+      - "80:80"
+      - "443:443"
+----
+
+After, you can change:
+- The container name.
+- Volumes.
+- Ports binding.
+
+==== Running
+
+You can use *docker-compose.yml*:
+
+[source,bash]
+----
+docker-compose up -d
+----
+
+It will run your container with parameters specified in the file.
+
+OR
+
+You can use *docker run* command:
+
+[source,bash]
+----
+docker run -it --rm -p 443:443 -p 80:80 --name certbot \
+  -v "/etc/letsencrypt:/etc/letsencrypt" \
+  -v "/var/lib/letsencrypt:/var/lib/letsencrypt" \
+  lparet/docker-ubuntu-certbot:1.0
+----
+
+== Author
+
+Louis Paret - perso@louisparet.fr
